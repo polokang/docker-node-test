@@ -29,3 +29,15 @@
 4. 上传镜像
    - `docker push hunterzhou/docker-node-test:latest`
 
+## 添加 prisma
+1. `npm i prisma`
+2. `npx prisma init`
+3. 修改 .env 文件中的
+4. 修改 /prisma/schema.prisma 文件
+5. `npx prisma generate`
+6. `npm i cors dotenv jsonwebtoken lodash`
+
+## docker 常用命令
+`docker exec -it <contain-name> /bin/sh`
+`docker rm <contain-name>`
+`docker logs <contain-name>`

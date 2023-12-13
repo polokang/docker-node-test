@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+
+model UserTypes {
+  UserTypeId     Int              @id(map: "PK_UserTypes")
+  UserType       String           @db.NVarChar(50)
+  UserInfomation UserInfomation[]
+}
+
+model UserInfomation {
+  UserId                   Int                        @id(map: "PK_UserInfomation") @default(autoincrement())
+  UserTypeId               Int
+  AccManagerId             Int?
+  CompanyId                Int
+  CustId                   Int?
+  Activated                Boolean
+  UserName                 String?                    @db.NVarChar(50)
+  Password                 String?                    @db.NVarChar(50)
+  Name                     String                     @db.NVarChar(50)
+  Email                    String                     @db.NVarChar(100)
+  CountryId                Int?
+  StateId                  Int?
+  Suburb                   String?                    @db.NVarChar(50)
+  Phone                    String?                    @db.NVarChar(50)
+  Mobile                   String                     @db.NVarChar(50)
+  UserIdForLastChange      Int?
+  DateCreated              DateTime                   @db.DateTime
+  LastUpdateDate           DateTime                   @db.DateTime
+  LastLoginTime            DateTime?                  @db.DateTime
+  LastLogoutTime           DateTime?                  @db.DateTime
+  PasswordHash             String?                    @db.VarChar(64)
+  ControllerInfo           ControllerInfo[]
+  UserControllerAssignment UserControllerAssignment[]
+  CompanyInfomation        CompanyInfomation          @relation(fields: [CompanyId], references: [CompanyId], onUpdate: NoAction, map: "FK_UserInfomation_CompanyInfomation")
+  UserTypes                UserTypes                  @relation(fields: [UserTypeId], references: [UserTypeId], onUpdate: NoAction, map: "FK_UserInfomation_UserTypes")
+}
+
+model UserControllerAssignment {
+  SeqKey                Int                  @id(map: "PK_UserControllerAssignment") @default(autoincrement())
+  UserId                Int
+  UnitId                Int
+  CompanyId             Int
+  CustId                Int?
+  SendSMSAlarm          Boolean?
+  SendEmailAlarm        Boolean?
+  SendDataSummaryReport Boolean?
+  SendWaterEnergyReport Boolean?
+  SendTrendCharts       Boolean?
+  DateCreated           DateTime             @db.DateTime
+  type                  Int?                 @default(1, map: "DF__UserContro__type__03A67F89")
+  CompanyInfomation     CompanyInfomation    @relation(fields: [CompanyId], references: [CompanyId], onUpdate: NoAction, map: "FK_UserControllerAssignment_CompanyInfomation")
+  ControllerInfo        ControllerInfo       @relation(fields: [UnitId], references: [UnitId], onUpdate: NoAction, map: "FK_UserControllerAssignment_ControllerInfo")
+  UserInfomation        UserInfomation       @relation(fields: [UserId], references: [UserId], onUpdate: NoAction, map: "FK_UserControllerAssignment_UserInfomation")
+}
+
+model ControllerInfo {
+  UnitId                   Int                        @id(map: "PK_ControllerInfo")
+  SerialNo                 Int?
+  SIMCardNo                String?                    @db.NChar(50)
+  PlanType                 Int?                       @db.TinyInt
+  CompanyId                Int
+  AccManagerId             Int?
+  CustomerCompanyId        Int?
+  SystemID                 String?                    @db.NVarChar(150)
+  TimeZoneId               String?                    @db.NVarChar(100)
+  LinuxTimeZoneId          String?                    @default("N'Australia/Sydney'", map: "DF_ControllerInfo_LinuxTimeZoneId") @db.NVarChar(100)
+  EnableDayLightSaving     Boolean?
+  SiteLocation             String?                    @db.NVarChar(50)
+  Suburb                   String?                    @db.NVarChar(50)
+  StateId                  Int?
+  CountryId                Int?
+  FirmwareVersion          String?                    @db.VarChar(20)
+  SetupVersionId           Int
+  Activated                Boolean
+  SystemVolume             Decimal?                   @db.Decimal(7, 2)
+  RecirculatingRate        Decimal?                   @db.Decimal(5, 1)
+  OperatingHoursPerWeek    Int?                       @db.SmallInt
+  TemperatureDrop          Decimal?                   @db.Decimal(5, 2)
+  TargetCycles             Decimal?                   @db.Decimal(5, 1)
+  MakeupWaterConductivity  Decimal?                   @db.Decimal(6, 3)
+  MakeupWaterCost          Decimal?                   @db.Decimal(5, 2)
+  BleedWaterCost           Decimal?                   @db.Decimal(5, 2)
+  BackwashWaterCost        Decimal?                   @db.Decimal(5, 2)
+  ElectricityCost          Decimal?                   @db.Decimal(5, 2)
+  BatherLoad               Int?
+  PoolType                 Int?                       @db.TinyInt
+  HardwareOptions          Int?
+  ControllerModel          String?                    @db.NChar(30)
+  AlarmMode                Int?                       @db.TinyInt
+  AlarmTime                String?                    @db.NChar(5)
+  SendSMSAlarm             Boolean?
+  SendEmailAlarm           Boolean?
+  SendDataSummaryReport    Boolean?
+  SendWaterEnergyReport    Boolean?
+  SendTrendCharts          Boolean?
+  UserIdForLastChange      Int?
+  ProductionStatus         Int?                       @db.TinyInt
+  EnableLostCommAlarm      Boolean?                   @default(true, map: "DF_ControllerInfo_EnableLostCommAlarm")
+  EnableFlowOffAlarm       Boolean?
+  DateLastUpdate           DateTime?                  @db.DateTime
+  DateCreated              DateTime                   @db.DateTime
+  UpdateFirmware           Boolean                    @default(false, map: "DF__Controlle__Updat__375B2DB9")
+  MonitorLink              String?                    @db.NVarChar(255)
+  CompanyInfomation        CompanyInfomation          @relation(fields: [CompanyId], references: [CompanyId], map: "FK_ControllerInfo_CompanyInfomation1")
+  DDLSetupVersionTable     DDLSetupVersionTable       @relation(fields: [SetupVersionId], references: [SetupVersionId], onUpdate: NoAction, map: "FK_ControllerInfo_DDLSetupVersionTable")
+  UserInfomation           UserInfomation?            @relation(fields: [AccManagerId], references: [UserId], onDelete: NoAction, onUpdate: NoAction, map: "FK_ControllerInfo_UserInfomation")
+  UserControllerAssignment UserControllerAssignment[]
+}
+
+model DDLSetupVersionTable {
+  SetupVersionId     Int              @id(map: "PK_DDLSetupVersionTable")
+  DDLVersionId       Int
+  SetupVersionString String           @db.VarChar(50)
+  SystemType         String?          @db.VarChar(50)
+  ControllerInfo     ControllerInfo[]
+}
+
+model CompanyInfomation {
+  CompanyId                Int                        @id(map: "PK_CompanyInfomation")
+  PastelId                 String?                    @db.NChar(20)
+  IsValidated              Boolean
+  Activated                Boolean
+  CompanyName              String                     @db.NVarChar(50)
+  A2                       String?                    @db.NVarChar(2)
+  A3                       String?                    @db.NVarChar(3)
+  CountryId                Int
+  StateId                  Int
+  Phone                    String                     @db.NVarChar(50)
+  Fax                      String?                    @db.NVarChar(50)
+  Email                    String?                    @db.NVarChar(50)
+  CompanyLogoName          String?                    @db.NVarChar(50)
+  DateCreated              DateTime                   @db.DateTime
+  DateValidated            DateTime?                  @db.DateTime
+  LastUpdateDate           DateTime?                  @db.DateTime
+  ControllerInfo           ControllerInfo[]
+  UserControllerAssignment UserControllerAssignment[]
+  UserInfomation           UserInfomation[]
+}
