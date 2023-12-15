@@ -19,7 +19,7 @@
 4. 启动 image
     `sudo docker run -d -p 8080:8080 hunterzhou/docker-node-test`
 
-## 修改 image 并上传
+## 修改 image 并上传(后期修改只需要运行1和4步骤即可)
 1. 本地重新构建镜像
     - `docker build -t hunterzhou/docker-node-test:latest .` 
 2. 登录 

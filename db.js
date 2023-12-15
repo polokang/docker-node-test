@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb+srv://AqRWUser:VMm5VmYA3HxtxtKp@cluster0.dyh9h.mongodb.net/AquariusTestDB");
+require('dotenv').config();
+mongoose.connect(process.env.MongoDB_URL);
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error:"));
