@@ -1,7 +1,7 @@
 
 # Ubuntu 环境下docker node api 环境搭建
 1. 本地编写程序并上传到 hunterzhou 的 docker hub 网站
-   - 本地构建镜像 `docker build -t IMAGE_NAME:TAG PATH`
+   - 本地构建镜像 `docker build -t IMAGE_NAME:TAG <PATH`
      - IMAGE_NAME 是你要构建的镜像的名称。
      - TAG 是你为该镜像设置的标签。
      - PATH 是 Dockerfile 所在的路径，用于构建镜像。
@@ -36,6 +36,9 @@
 4. 修改 /prisma/schema.prisma 文件
 5. `npx prisma generate`
 6. `npm i cors dotenv jsonwebtoken lodash`
+
+## 添加 mongoose
+1. `npm i mongoose`
 
 ## docker 常用命令
 `docker exec -it <contain-name> /bin/sh`
