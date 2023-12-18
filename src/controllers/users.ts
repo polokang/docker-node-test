@@ -1,8 +1,8 @@
 const { PrismaClient: PrismaSQLClient } = require('@prisma/client');
-
+import { AuditLogsModel } from "../models/ActUser";
 const sqlClient = new PrismaSQLClient({ log: ["query", "info"] });
 
-const getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
   const { userId } = req.query;
   const intUserId = parseInt(userId);
   try {
@@ -21,4 +21,15 @@ const getUserById = async (req, res) => {
   }
 };
 
-module.exports = getUserById;
+
+
+
+export const getActUsers = async (req, res) => {
+  try {
+    const users = await AuditLogsModel.find({});
+    res.send(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+}

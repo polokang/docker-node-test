@@ -40,6 +40,10 @@
 ## 添加 mongoose
 1. `npm i mongoose`
 
+## 将项目修改成 ts
+1. 安装ts库和依赖
+   `npm install typescript @types/node @types/express @types/cors ts-node`
+
 ## docker 常用命令
 `docker exec -it <contain-name> /bin/sh`
 `docker rm <contain-name>`

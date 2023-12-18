@@ -1,10 +1,8 @@
-const express = require("express");
-const db = require("./db");
+import express from "express";
+import cors from "cors";
+import userRouter from "./routes/users";
 
 const app = express();
-const userRouter = require("./routes/users");
-const cors = require("cors");
-
 const port = process.env.PORT || 8081;
 
 app.use(cors());
